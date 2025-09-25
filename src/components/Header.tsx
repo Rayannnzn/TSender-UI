@@ -13,7 +13,7 @@ export default function Header() {
       {/* Right side - GitHub link and Connect button */}
       <div className="flex items-center space-x-4">
         <a
-          href="https://github.com/Rayannnzn"
+          href="https://github.com/Rayannnzn/TSender-UI"
           target="_blank"
           rel="noopener noreferrer"
           className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-700 hover:text-gray-900"
