@@ -4,8 +4,8 @@
 import InputField from "@/components/ui/InputField"
 import {useMemo, useState} from "react"
 import { tsenderAbi,erc20Abi,chainsToTSender } from "@/constants"
-import {useChainId,useConfig,useAccount} from "wagmi"
-import {readContract} from "@wagmi/core"
+import {useChainId,useConfig,useAccount,useWriteContract} from "wagmi"
+import {readContract,waitForTransactionReceipt} from "@wagmi/core"
 import CalculateTotal from "./utils/CalculateTotal/CalculateTotal"
 
 export default function AirdropForm(){
@@ -17,7 +17,7 @@ export default function AirdropForm(){
     const config = useConfig()
     const account = useAccount()
     const TotalAmount = useMemo(() => CalculateTotal(amounts),[amounts])
-     
+    const {data: hash,isPending,writeContractAsync} = useWriteContract()
 
     async function getApprovedAmount(tsenderAddress:string | null): Promise<number>{
         if(!tsenderAddress){
@@ -41,6 +41,51 @@ export default function AirdropForm(){
 
         const tsenderAddress = chainsToTSender[chainId]["tsender"]
         const approvedAmount = await getApprovedAmount(tsenderAddress)
+
+        if(approvedAmount < TotalAmount){
+
+       const approvalHash = await writeContractAsync({
+               abi: erc20Abi,
+               address: tokenAddress as `0x${string}`,
+               functionName: "approve",
+               args: [tokenAddress as `0x${string}`,BigInt(TotalAmount)],
+            })
+
+       const approvalReceipt = await waitForTransactionReceipt(config,{
+        hash: approvalHash})
+
+        console.log("Approval Confirmed",approvalReceipt)
+
+        await writeContractAsync({
+                abi: tsenderAbi,
+                address: tsenderAddress as `0x${string}`,
+                functionName: "airdropERC20",
+                args: [
+                    tokenAddress,
+                    // Comma or new line separated
+                    Recipients.split(/[,\n]+/).map(addr => addr.trim()).filter(addr => addr !== ''),
+                    amounts.split(/[,\n]+/).map(amt => amt.trim()).filter(amt => amt !== ''),
+                    BigInt(TotalAmount),
+                ],
+            },)
+       
+        }
+
+        else{
+            await writeContractAsync({
+                abi: tsenderAbi,
+                address: tsenderAddress as `0x${string}`,
+                functionName: "airdropERC20",
+                args: [
+                    tokenAddress,
+                    // Comma or new line separated
+                    Recipients.split(/[,\n]+/).map(addr => addr.trim()).filter(addr => addr !== ''),
+                    amounts.split(/[,\n]+/).map(amt => amt.trim()).filter(amt => amt !== ''),
+                    BigInt(TotalAmount),
+                ],
+            },)
+        }
+
     }
 
 
