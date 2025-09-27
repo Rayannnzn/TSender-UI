@@ -48,7 +48,7 @@ export default function AirdropForm(){
                abi: erc20Abi,
                address: tokenAddress as `0x${string}`,
                functionName: "approve",
-               args: [tokenAddress as `0x${string}`,BigInt(TotalAmount)],
+               args: [tsenderAddress as `0x${string}`,BigInt(TotalAmount)],
             })
 
        const approvalReceipt = await waitForTransactionReceipt(config,{
