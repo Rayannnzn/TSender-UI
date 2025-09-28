@@ -19,7 +19,7 @@ export default function RootLayout(props: {children: ReactNode}) {
 
         <Providers>
                 <Header/>
-          
+          <br />
           {props.children}
         </Providers>
 

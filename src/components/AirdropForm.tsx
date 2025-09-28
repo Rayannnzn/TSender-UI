@@ -146,28 +146,28 @@ const totalTokens = totalWei / Math.pow(10, tokenDecimals)
                 address: tsenderAddress as `0x${string}`,
                 functionName: "airdropERC20",
                 args: [
-                    tokenAddress,
-                    // Comma or new line separated
-                    Recipients.split(/[,\n]+/).map(addr => addr.trim()).filter(addr => addr !== ''),
-                    amounts.split(/[,\n]+/).map(amt => amt.trim()).filter(amt => amt !== ''),
-                    BigInt(TotalAmount),
-                ],
+                tokenAddress,
+    Recipients.split(/[,\n]+/).map(addr => addr.trim()).filter(addr => addr !== ''),
+    amounts.split(/[,\n]+/).map(amt => amt.trim()).filter(amt => amt !== ''),
+    BigInt(TotalAmount),],
             },)
         }
             setIsLoading(false);
-
-
     }
 
 
     return (
-        <div>
+        <div >
+
         <InputField
+        
         label = "Token Address"
         placeholder = "0x"
         value = {tokenAddress}
         onChange={(e) => setTokenAddress(e.target.value)}
         />
+
+<br />
 
         <InputField
         label = "Recipients"
@@ -177,7 +177,10 @@ const totalTokens = totalWei / Math.pow(10, tokenDecimals)
         large = {true}
         />
 
+<br />
+
                 <InputField
+                
         label = "Amounts"
         placeholder = "0x"
         value = {amounts}
