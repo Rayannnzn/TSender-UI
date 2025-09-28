@@ -10,7 +10,6 @@ import CalculateTotal from "./utils/CalculateTotal/CalculateTotal"
 
 export default function AirdropForm(){
 
-
     const [tokenAddress,setTokenAddress] = useState("")
     const [Recipients,setRecipients] = useState("")
     const [amounts,setAmounts] = useState("")
@@ -22,6 +21,42 @@ export default function AirdropForm(){
     const [tokenName, setTokenName] = useState<string>("-")
     const [tokenDecimals, setTokenDecimals] = useState<number>(18)
     const [isLoading, setIsLoading] = useState(false);
+
+
+useEffect(() => {
+  const savedTokenAddress = localStorage.getItem('tokenAddress') || ""
+  const savedRecipients = localStorage.getItem('recipients') || ""
+  const savedAmounts = localStorage.getItem('amounts') || ""
+  
+  setTokenAddress(savedTokenAddress)
+  setRecipients(savedRecipients)
+  setAmounts(savedAmounts)
+}, [])
+
+
+
+useEffect(() => {
+  localStorage.setItem('tokenAddress', tokenAddress)
+}, [tokenAddress])
+
+useEffect(() => {
+  localStorage.setItem('recipients', Recipients)
+}, [Recipients])
+
+useEffect(() => {
+  localStorage.setItem('amounts', amounts)
+}, [amounts])
+    
+
+
+
+
+
+
+
+
+
+
 
 
 useEffect(() => {
