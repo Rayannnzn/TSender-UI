@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test" : "pnpm exec playwright test",
+    "test-ui" : "pnpm exec playwright test --ui",
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
