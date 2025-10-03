@@ -1,1 +1,1 @@
-export { CalculateTotal } from "./CalculateTotal/CalculateTotal";
+export { default as CalculateTotal  } from "./CalculateTotal/CalculateTotal";
